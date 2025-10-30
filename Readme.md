@@ -22,7 +22,7 @@ winget install Kubernetes.minikube
 docker run -p 8080:80 -d nginx
 ```
 
-## Run K8s cluster
+## Create K8s cluster
 
 **🚀 Start `minikube` cluster in Docker**
 ```powershell
@@ -92,9 +92,9 @@ kubectl delete pod nginx-pod
 kubectl get pods -o wide
 ```
 
-## Run K8s deployment and scale it
+## Create K8s deployment
 
-**Create deployment `nginx-deploy` consisting of one pod**
+**Create `nginx-deploy` deployment consisting of 1 pod**
 ```powershell
 kubectl create deployment nginx-deploy --image=nginx
 kubectl get pods -o wide
@@ -130,6 +130,86 @@ minikube ssh
 # We can reach internal 10.244.0.5 only inside 'minikube' node. We cannot ping it from outside.
 docker@minikube:~$ ping 10.244.0.5
 docker@minikube:~$ curl 10.244.0.5
+```
+
+## Create `ClusterIP` service
+**Create service available only inside cluster and balancing requests among pods**
+```powershell
+kubectl expose deployment nginx-deploy --port=8080 --target-port=80
+kubectl get services
+kubectl describe service nginx-deploy
+kubectl delete service nginx-deploy
+```
+`10.104.17.117:8080` is avaliable only inside the cluster.
+All requests will be redirected to one of the pods with IP `210.244.x.x:80`
+```panel
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+kubernetes     ClusterIP   10.96.0.1       <none>        443/TCP    3d23h
+nginx-deploy   ClusterIP   10.104.17.117   <none>        8080/TCP   14s
+```
+**Connect to `ClusterIP` service inside the cluster**
+```powershell
+minikube ssh
+docker@minikube:~$ curl 10.104.17.117:8080
+```
+
+## Create `NodePort` service
+**Create service exposing all nodes outside of cluster and balancing requests among pods**
+```powershell
+kubectl expose deployment nginx-deploy --type=NodePort --port=8888 --target-port=80
+kubectl get services
+kubectl describe service nginx-deploy
+minikube ip
+kubectl delete svc nginx-deploy
+```
+NodePort service opens port `8888` on every node. 
+We can reach every node by its node IP and port `8888`.
+External address `192.168.49.2:30691` is avaliable outside of cluster.
+All requests will be redirected from `192.168.49.2:30691`
+- to NodePort with IP `10.98.216.65:8888` 
+- NodePort redirects to one of the pods with IP `210.244.x.x:80`
+```panel
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP          3d23h
+nginx-deploy   NodePort    10.98.216.65   <none>        8888:30691/TCP   9s
+```
+
+**Create tunnel to 'nginx-deploy' service in separate terminal**
+```panel
+Since our cluster runs in Docker we have to create tunnel to `nginx-deploy` service and keep it running in separate terminal.
+Otherwise we could just reach service at 192.168.49.2:30691
+```
+```powershell
+minikube service nginx-deploy --url
+http://127.0.0.1:53745
+```
+
+**Connect to `NodePort` service outside the cluster**
+```powershell
+curl 127.0.0.1:53745
+```
+
+## Create `LoadBalancer` service
+**Create tunnel to `minikube` cluster in separate terminal**
+```powershell
+minikube tunnel
+```
+
+**Create service exposing one external IP outside of cluster and balancing requests among pods**
+```powershell
+kubectl expose deployment nginx-deploy --type=LoadBalancer --port=9999 --target-port=80
+kubectl get svc
+kubectl describe svc nginx-deploy
+kubectl delete svc nginx-deploy
+```
+External address `127.0.0.1:9999` is avaliable outside of cluster.
+All requests will be redirected from `127.0.0.1:9999`
+- to LoadBalancer with IP `10.104.113.99:31733` 
+- LoadBalancer redirects to one of the pods with IP `210.244.x.x:80`
+```panel
+NAME           TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+kubernetes     ClusterIP      10.96.0.1       <none>        443/TCP          4d
+nginx-deploy   LoadBalancer   10.104.113.99   127.0.0.1     9999:31733/TCP   9s
 ```
 
 ## Useful links
