@@ -270,11 +270,20 @@ kubectl delete deploy k8s-web-hello
 All containers with image `k8s-web-hello-ru` are updated to image `victornovik/k8s-web-hello-ru:2.0.0`
 Type in `http://localhost:3333/` in browser and it will return the response of version 2.0.0
 
+## Use YAML for deployment
+**Create deployment from deployment.yaml**
+```powershell
+kubectl apply -f deployment.yaml
+```
 
 
 ## Useful links
 - [K8s Getting started](https://kubernetes.io/docs/setup/)
 - [K8s Install tools](https://kubernetes.io/docs/tasks/tools/)
+- [K8s Resources](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/)
 - [Download Node.js](https://nodejs.org/en/download)
 - [Docker Hub](https://hub.docker.com/repositories/victornovik)
+- [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
+- [Resource units in Kubernetes](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu)
+- [Victor's K8s repository](https://github.com/victornovik/k8s)
 - [Bogdan's K8s repository](https://github.com/bstashchuk/k8s)

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-web-hello
+spec:
+  selector:
+    matchLabels:
+      app: k8s-web-hello
+  template:
+    metadata:
+      labels:
+        app: k8s-web-hello
+    spec:
+      containers:
+        - name: k8s-web-hello
+          image: victornovik/k8s-web-hello-ru
+          resources:
+            requests:
+              memory: "64M"
+              cpu: "250m" # 1\4 of CPU core
+            limits:
+              memory: "128M" # 128 Megabytes (Ei, Pi, Ti, Gi, Mi - mebibytes, Ki)
+              cpu: "500m" # 1\2 of CPU core
+          ports:
+            - containerPort: 3000
+            - containerPort: 3001
