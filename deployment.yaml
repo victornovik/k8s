@@ -24,4 +24,3 @@ spec:
               cpu: "500m" # 1\2 of CPU core
           ports:
             - containerPort: 3000
-            - containerPort: 3001

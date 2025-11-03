@@ -250,7 +250,7 @@ kubectl describe svc k8s-web-hello
 
 kubectl scale deploy k8s-web-hello --replicas=7
 ```
-Type in `http://localhost:3333/` in browser and every time it will return the name of different pod that handled this request
+Click [http://localhost:3333](http://localhost:3333) and it will return the name of different pod that handled this request
 
 **Uplift the version of Docker image up to 2.0.0**
 ```powershell
@@ -268,13 +268,32 @@ kubectl delete svc k8s-web-hello
 kubectl delete deploy k8s-web-hello
 ```
 All containers with image `k8s-web-hello-ru` are updated to image `victornovik/k8s-web-hello-ru:2.0.0`
-Type in `http://localhost:3333/` in browser and it will return the response of version 2.0.0
+Click [http://localhost:3333](http://localhost:3333) and it will return the response of version 2.0.0
 
 ## Use YAML for deployment
 **Create deployment from deployment.yaml**
 ```powershell
 kubectl apply -f deployment.yaml
 ```
+
+**Create `LoadBalancer` service from service.yaml**
+```powershell
+kubectl apply -f service.yaml
+```
+Click [http://localhost:3333](http://localhost:3333) and `LoadBalancer` will redirect it to a Pod
+
+**Delete service and deploy based on .yaml**
+```powershell
+kubectl delete -f service.yaml -f deployment.yaml
+```
+
+## Control K8s
+**Run K8s Dashboard**
+```powershell
+minikube dashboard
+```
+Click [Kubernetes dashboard](http://127.0.0.1:50953/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default)
+
 
 
 ## Useful links
