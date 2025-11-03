@@ -263,6 +263,9 @@ docker push victornovik/k8s-web-hello-ru --all-tags
 kubectl rollout status deploy k8s-web-hello
 kubectl set image deploy k8s-web-hello k8s-web-hello-ru=victornovik/k8s-web-hello-ru:2.0.0
 kubectl rollout status deploy k8s-web-hello
+
+kubectl delete svc k8s-web-hello
+kubectl delete deploy k8s-web-hello
 ```
 All containers with image `k8s-web-hello-ru` are updated to image `victornovik/k8s-web-hello-ru:2.0.0`
 Type in `http://localhost:3333/` in browser and it will return the response of version 2.0.0
@@ -274,4 +277,4 @@ Type in `http://localhost:3333/` in browser and it will return the response of v
 - [K8s Install tools](https://kubernetes.io/docs/tasks/tools/)
 - [Download Node.js](https://nodejs.org/en/download)
 - [Docker Hub](https://hub.docker.com/repositories/victornovik)
-- [Bogdan Stashchuk K8s repository](https://github.com/bstashchuk/k8s)
+- [Bogdan's K8s repository](https://github.com/bstashchuk/k8s)
