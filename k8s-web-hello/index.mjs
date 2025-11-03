@@ -5,7 +5,7 @@ const app = express();
 const PORT = 3000;
 
 app.get("/", (req, res) => {
-  const helloMessage = `<h1>[k8s-web-hello v1.0]: Hello from ${os.hostname()}</h1>`;
+  const helloMessage = `<h1>[k8s-web-hello v2.0]: Hello from Pod: ${os.hostname()}</h1>`;
   console.log(helloMessage);
   res.send(helloMessage);
 });

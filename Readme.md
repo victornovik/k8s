@@ -212,7 +212,7 @@ kubernetes     ClusterIP      10.96.0.1       <none>        443/TCP          4d
 nginx-deploy   LoadBalancer   10.104.113.99   127.0.0.1     9999:31733/TCP   9s
 ```
 
-##  Deploy our own web application in K8s
+##  Deploy `node.js` application in K8s
 **Create `victornovik/k8s-web-hello-ru` Docker image with node.js application**
 ```powershell
 docker build . -t victornovik/k8s-web-hello-ru:latest  -t victornovik/k8s-web-hello-ru:1.0.0
@@ -251,6 +251,23 @@ kubectl describe svc k8s-web-hello
 kubectl scale deploy k8s-web-hello --replicas=7
 ```
 Type in `http://localhost:3333/` in browser and every time it will return the name of different pod that handled this request
+
+**Uplift the version of Docker image up to 2.0.0**
+```powershell
+docker build . -t victornovik/k8s-web-hello-ru:latest  -t victornovik/k8s-web-hello-ru:2.0.0
+docker push victornovik/k8s-web-hello-ru --all-tags
+```
+
+**Update K8s deployment with image 2.0.0**
+```powershell
+kubectl rollout status deploy k8s-web-hello
+kubectl set image deploy k8s-web-hello k8s-web-hello-ru=victornovik/k8s-web-hello-ru:2.0.0
+kubectl rollout status deploy k8s-web-hello
+```
+All containers with image `k8s-web-hello-ru` are updated to image `victornovik/k8s-web-hello-ru:2.0.0`
+Type in `http://localhost:3333/` in browser and it will return the response of version 2.0.0
+
+
 
 ## Useful links
 - [K8s Getting started](https://kubernetes.io/docs/setup/)
