@@ -213,5 +213,8 @@ nginx-deploy   LoadBalancer   10.104.113.99   127.0.0.1     9999:31733/TCP   9s
 ```
 
 ## Useful links
-- [Getting started](https://kubernetes.io/docs/setup/)
-- [Install tools](https://kubernetes.io/docs/tasks/tools/)
+- [K8s Getting started](https://kubernetes.io/docs/setup/)
+- [K8s Install tools](https://kubernetes.io/docs/tasks/tools/)
+- [Download Node.js](https://nodejs.org/en/download)
+- [Docker Hub](https://hub.docker.com/repositories/victornovik)
+- [Bogdan Stashchuk K8s repository](https://github.com/bstashchuk/k8s)
