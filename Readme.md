@@ -212,6 +212,46 @@ kubernetes     ClusterIP      10.96.0.1       <none>        443/TCP          4d
 nginx-deploy   LoadBalancer   10.104.113.99   127.0.0.1     9999:31733/TCP   9s
 ```
 
+##  Deploy our own web application in K8s
+**Create `victornovik/k8s-web-hello-ru` Docker image with node.js application**
+```powershell
+docker build . -t victornovik/k8s-web-hello-ru:latest  -t victornovik/k8s-web-hello-ru:1.0.0
+docker images | grep web-hello
+```
+
+**Upload Docker image to Docker Hub**
+```powershell
+docker logout
+docker login
+docker push victornovik/k8s-web-hello-ru --all-tags
+```
+
+**Create `k8s-web-hello` deployment**
+```powershell
+kubectl create deploy k8s-web-hello --image=victornovik/k8s-web-hello-ru:1.0.0
+kubectl get pods -o wide
+kubectl describe deploy k8s-web-hello
+kubectl describe pod k8s-web-hello-59ffdc5686-6f275
+
+minikube ssh
+docker@minikube:~$ curl 10.244.0.11:3000
+```
+
+**Create tunnel to `minikube` cluster in separate terminal**
+```powershell
+minikube tunnel
+```
+
+**Create `LoadBalancer` service**
+```powershell
+kubectl expose deployment k8s-web-hello --type=LoadBalancer --port=3333 --target-port=3000
+kubectl get svc
+kubectl describe svc k8s-web-hello
+
+kubectl scale deploy k8s-web-hello --replicas=7
+```
+Type in `http://localhost:3333/` in browser and every time it will return the name of different pod that handled this request
+
 ## Useful links
 - [K8s Getting started](https://kubernetes.io/docs/setup/)
 - [K8s Install tools](https://kubernetes.io/docs/tasks/tools/)
