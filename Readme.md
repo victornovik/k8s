@@ -30,7 +30,7 @@ cd /d/dev/src/k8s
 cd /d/dev/src/k8s/k8s-web-to-nginx
 ```
 
-## Create K8s cluster
+## Create K8s cluster in Docker
 
 **🚀 Start `minikube` cluster in Docker**
 ```powershell
@@ -363,14 +363,53 @@ docker push victornovik/k8s-web-to-nginx --all-tags
 
 kubectl apply -f k8s-web-to-nginx.yaml
 kubectl rollout status deploy k8s-web-to-nginx
+
+kubectl delete -f k8s-web-to-nginx.yaml -f nginx.yaml
 ```
 
 ✅ All containers with image `k8s-web-to-nginx` are updated to image `victornovik/k8s-web-to-nginx:2.0.1`
 Click [http://localhost:3333/users](http://localhost:3333/users) and it will return the list of users from https://jsonplaceholder.typicode.com/users
+🌐 VPN has to be turned on
+
+## Create K8s cluster in `containerd` and `Hyper-V`
+**🚀 Start `minikube` cluster**
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+minikube start --driver=hyperv --container-runtime=containerd
+minikube status
+```
+
+**See existing containers**
+```powershell
+minikube ssh
+$ sudo ctr -n k8s.io containers list | grep nginx
+```
+
+**Run minikube tunnel in separate terminal**
+```powershell
+minikube tunnel
+```
+
+**Create deployments from k8s-web-to-nginx.yaml and nginx.yaml**
+```powershell
+kubectl apply -f k8s-web-to-nginx.yaml -f nginx.yaml
+```
+- Click [http://10.106.40.88:3333](http://10.106.40.88:3333) and `LoadBalancer` will redirect it to `k8s-web-to-nginx` deploy that answers `Hello from Pod`
+- Click [http://10.106.40.88:3333/nginx](http://10.106.40.88:3333/nginx) and `LoadBalancer` will redirect it to `k8s-web-to-nginx` deploy that requests `nginx` deployment via internal `ClusterIP` service and returns `Welcome to nginx!` page
+
+- **Delete deployments from k8s-web-to-nginx.yaml and nginx.yaml**
+```powershell
+kubectl delete -f k8s-web-to-nginx.yaml -f nginx.yaml
+minikube stop
+minikube delete
+```
 
 ##  Useful links
 - [K8s Getting started](https://kubernetes.io/docs/setup/)
 - [K8s Install tools](https://kubernetes.io/docs/tasks/tools/)
+- [minikube on Docker](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download)
+- [minikube on Hyper-V](https://minikube.sigs.k8s.io/docs/drivers/hyperv/)
+- [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [K8s Resources](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/)
 - [Download Node.js](https://nodejs.org/en/download)
 - [Docker Hub](https://hub.docker.com/repositories/victornovik)
