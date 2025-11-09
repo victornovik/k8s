@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: k8s-web-to-nginx
-          image: victornovik/k8s-web-to-nginx
+          image: victornovik/k8s-web-to-nginx:2.0.0
           resources:
             requests:
               memory: "64M"

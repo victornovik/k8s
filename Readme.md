@@ -347,7 +347,25 @@ nginx-7fbbdbd6f7-pggmz              1/1     Running   0          15h
 - Click [http://localhost:3333](http://localhost:3333) and `LoadBalancer` will redirect it to `k8s-web-to-nginx` deploy that answers `Hello from Pod`
 - Click [http://localhost:3333/nginx](http://localhost:3333/nginx) and `LoadBalancer` will redirect it to `k8s-web-to-nginx` deploy that requests `nginx` deployment via internal `ClusterIP` service and returns `Welcome to nginx!` page
 
+**Assign new tag to `victornovik/k8s-web-to-nginx` image**
+```powershell
+docker tag victornovik/k8s-web-to-nginx:latest victornovik/k8s-web-to-nginx:1.0.0
+docker images | grep k8s-web-to
+docker push victornovik/k8s-web-to-nginx --all-tags
 
+# Add new endpoint `/users` to index.mjs
+
+docker build . -t victornovik/k8s-web-to-nginx:latest -t victornovik/k8s-web-to-nginx:2.0.0
+docker images | grep k8s-web-to
+docker push victornovik/k8s-web-to-nginx --all-tags
+
+# Specify new tag `victornovik/k8s-web-to-nginx:2.0.0` in k8s-web-to-nginx.yaml
+kubectl set image deploy k8s-web-to-nginx k8s-web-to-nginx=victornovik/k8s-web-to-nginx:2.0.0
+kubectl rollout status deploy k8s-web-to-nginx
+```
+
+✅ All containers with image `k8s-web-to-nginx` are updated to image `victornovik/k8s-web-to-nginx:2.0.0`
+Click [http://localhost:3333/users](http://localhost:3333/users) and it will return the list of users from https://jsonplaceholder.typicode.com/users
 
 ##  Useful links
 - [K8s Getting started](https://kubernetes.io/docs/setup/)
@@ -359,3 +377,4 @@ nginx-7fbbdbd6f7-pggmz              1/1     Running   0          15h
 - [Resource units in Kubernetes](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu)
 - [Victor's K8s repository](https://github.com/victornovik/k8s)
 - [Bogdan's K8s repository](https://github.com/bstashchuk/k8s)
+- [JSONPlaceholder](https://jsonplaceholder.typicode.com) - VPN
