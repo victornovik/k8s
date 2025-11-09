@@ -399,7 +399,7 @@ kubectl apply -f k8s-web-to-nginx.yaml -f nginx.yaml
 
 - **Delete deployments from k8s-web-to-nginx.yaml and nginx.yaml**
 ```powershell
-kubectl delete -f k8s-web-to-nginx.yaml -f nginx.yaml
+kubectl delete all --all
 minikube stop
 minikube delete
 ```
