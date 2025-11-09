@@ -21,6 +21,7 @@ app.get("/users", async (req, res) => {
   const url = "https://jsonplaceholder.typicode.com/users";
   const response = await fetch(url);
   const body = await response.text();
+  res.setHeader("Content-Type", "application/json");
   res.send(body);
 });
 

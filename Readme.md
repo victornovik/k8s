@@ -355,16 +355,17 @@ docker push victornovik/k8s-web-to-nginx --all-tags
 
 # Add new endpoint `/users` to index.mjs
 
-docker build . -t victornovik/k8s-web-to-nginx:latest -t victornovik/k8s-web-to-nginx:2.0.0
+docker build . -t victornovik/k8s-web-to-nginx:latest -t victornovik/k8s-web-to-nginx:2.0.1
 docker images | grep k8s-web-to
 docker push victornovik/k8s-web-to-nginx --all-tags
 
-# Specify new tag `victornovik/k8s-web-to-nginx:2.0.0` in k8s-web-to-nginx.yaml
-kubectl set image deploy k8s-web-to-nginx k8s-web-to-nginx=victornovik/k8s-web-to-nginx:2.0.0
+# Specify new tag `victornovik/k8s-web-to-nginx:2.0.1` in k8s-web-to-nginx.yaml
+
+kubectl apply -f k8s-web-to-nginx.yaml
 kubectl rollout status deploy k8s-web-to-nginx
 ```
 
-✅ All containers with image `k8s-web-to-nginx` are updated to image `victornovik/k8s-web-to-nginx:2.0.0`
+✅ All containers with image `k8s-web-to-nginx` are updated to image `victornovik/k8s-web-to-nginx:2.0.1`
 Click [http://localhost:3333/users](http://localhost:3333/users) and it will return the list of users from https://jsonplaceholder.typicode.com/users
 
 ##  Useful links
