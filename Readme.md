@@ -418,3 +418,4 @@ minikube delete
 - [Victor's K8s repository](https://github.com/victornovik/k8s)
 - [Bogdan's K8s repository](https://github.com/bstashchuk/k8s)
 - [JSONPlaceholder](https://jsonplaceholder.typicode.com) - VPN
+- PAID [K8s in DigitalOcean Cloud](https://cloud.digitalocean.com/) - VPN
