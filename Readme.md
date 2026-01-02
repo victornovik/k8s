@@ -3,7 +3,7 @@
 ## Installation
 
 **Install `kubectl`**
-- [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
+- [Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
 
 ```powershell
 curl -LO "https://dl.k8s.io/release/v1.34.0/bin/windows/amd64/kubectl.exe"
@@ -11,10 +11,24 @@ kubectl version --client
 ```
 
 **Install `minukube`**
-- [Install and Set Up minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download)
+- [Install minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download)
 
 ```powershell
 winget install Kubernetes.minikube
+```
+
+**Install `helm` package manager for Kubernetes**
+- [Install Helm](https://helm.sh/docs/intro/install)
+
+```powershell
+choco install kubernetes-helm
+OR
+winget install Helm.Helm
+```
+
+**Install `ingress-nginx` in Helm**
+```powershell
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 ```
 
 **Install `nginx` container in order to verify Docker desktop**
@@ -408,6 +422,7 @@ minikube delete
 ##  Useful links
 - [K8s Getting started](https://kubernetes.io/docs/setup/)
 - [K8s Install tools](https://kubernetes.io/docs/tasks/tools/)
+- [Helm package manager](https://helm.sh/)
 - [minikube on Docker](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download)
 - [minikube on Hyper-V](https://minikube.sigs.k8s.io/docs/drivers/hyperv/)
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
