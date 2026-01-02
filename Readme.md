@@ -6,7 +6,7 @@
 - [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
 
 ```powershell
-curl.exe -LO "https://dl.k8s.io/release/v1.34.0/bin/windows/amd64/kubectl.exe"
+curl -LO "https://dl.k8s.io/release/v1.34.0/bin/windows/amd64/kubectl.exe"
 kubectl version --client
 ```
 
@@ -138,8 +138,10 @@ docker@minikube:~$ curl 10.244.0.5
 docker@minikube:~$ wget 10.244.0.5
 ```
 
+## Three standard services `ClusterIP`, `NodePort` and `LoadBalancer`
+
 ## Create `ClusterIP` service
-**Create service available only inside cluster and balancing requests among pods**
+**Service available only inside cluster and balancing requests among pods**
 ```powershell
 kubectl expose deployment nginx-deploy --port=8080 --target-port=80
 kubectl describe service nginx-deploy
@@ -164,7 +166,7 @@ docker@minikube:~$ wget 10.104.17.117:8080
 ```
 
 ## Create `NodePort` service
-**Create service exposing all nodes outside of cluster and balancing requests among pods**
+**Service exposing all nodes on the same port outside of the cluster and balancing requests among pods**
 ```powershell
 kubectl expose deployment nginx-deploy --type=NodePort --port=8888 --target-port=80
 kubectl describe service nginx-deploy
@@ -208,7 +210,7 @@ wget 127.0.0.1:53745
 minikube tunnel
 ```
 
-**Create service exposing one external IP outside of cluster and balancing requests among pods**
+**Service exposing one external ip:port outside of cluster and balancing requests among pods**
 ```powershell
 kubectl expose deployment nginx-deploy --type=LoadBalancer --port=9999 --target-port=80
 kubectl describe svc nginx-deploy
@@ -233,7 +235,7 @@ docker build . -t victornovik/k8s-web-hello-ru:latest  -t victornovik/k8s-web-he
 docker images | grep web-hello
 ```
 
-**Upload Docker image to Docker Hub**
+**Upload Docker image to [Docker Hub](https://hub.docker.com/repositories/victornovik)**
 ```powershell
 docker logout
 docker login
@@ -242,7 +244,7 @@ docker push victornovik/k8s-web-hello-ru --all-tags
 
 **Create `k8s-web-hello` deployment**
 ```powershell
-kubectl create deploy k8s-web-hello --image=victornovik/k8s-web-hello-ru:1.0.0
+kubectl create deploy k8s-web-hello --image=victornovik/k8s-web-hello-ru:3.0.0
 kubectl get pods -o wide
 kubectl describe deploy k8s-web-hello
 kubectl describe pod k8s-web-hello-59ffdc5686-6f275
@@ -301,11 +303,10 @@ kubectl delete -f service.yaml -f deployment.yaml
 ```
 
 ## Control K8s
-**Run K8s Dashboard**
+**Open K8s Dashboard in the browser**
 ```powershell
 minikube dashboard
 ```
-💚 Click [Kubernetes dashboard](http://127.0.0.1:50953/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default)
 
 ## Two deployments `k8s-web-to-nginx` and `nginx`
 **Create deployments from k8s-web-to-nginx.yaml and nginx.yaml**

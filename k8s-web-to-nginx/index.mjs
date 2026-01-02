@@ -10,6 +10,12 @@ app.get("/", (req, res) => {
   res.send(helloMessage);
 });
 
+app.get("/health", (req, res) => {
+    const helloMessage = `Healthcheck passed`;
+    console.log(helloMessage);
+    res.send(helloMessage);
+});
+
 app.get("/nginx", async (req, res) => {
   const url = "http://nginx";
   const response = await fetch(url);
