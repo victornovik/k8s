@@ -1,4 +1,9 @@
 ###############################################################################
+# Override GitHub Linguist language detection
+###############################################################################
+* linguist-language=YAML
+
+###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
@@ -61,8 +66,3 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-
-###############################################################################
-# Override GitHub Linguist language detection
-###############################################################################
-* linguist-language=YAML
